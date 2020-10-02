@@ -2,7 +2,6 @@
 ##'
 ##' Produces variants of QRA where the weights are optimised per quantile or
 ##' not, with or without intercept, and normalised to sum up to 1 or not.
-##' @title
 ##' @param forecasts data frame of forecasts
 ##' @param data data from of validation data
 ##' @param all_dates whether ensembles are to be generated for all creation

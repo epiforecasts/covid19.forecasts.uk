@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_ensembles.r
 \name{generate_ensembles}
 \alias{generate_ensembles}
-\title{}
+\title{Generate quantile regression ensembles and an equal-weighted ensemble}
 \usage{
 generate_ensembles(forecasts, data, all_dates = TRUE, max_history = 5, ...)
 }
@@ -22,9 +22,6 @@ dates; otherwise will just do the latest}
 a data frame with the ensembles
 }
 \description{
-Generate quantile regression ensembles and an equal-weighted ensemble
-}
-\details{
 Produces variants of QRA where the weights are optimised per quantile or
 not, with or without intercept, and normalised to sum up to 1 or not.
 }
