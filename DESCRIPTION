@@ -1,0 +1,19 @@
+Package: covid19.forecasts.uk
+Title: Code accompanying the manuscript "Short-term forecasts to inform the response to the Covid-19 epidemic in the UK"
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sebastian",
+           family = "Funk",
+           role = c("aut", "cre"),
+           email = "sebastian.funk@lshtm.ac.uk")
+Description: Contains all the code and data required to generate the figures and tables in the manuscript.
+Depends:
+    R (>= 4.0.0),
+    dplyr
+License: MIT + file LICENSE
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/sbfnk/covid19.forecasts.uk
+BugReports: https://github.com/sbfnk/covid19.forecasts.uk/issues
+RoxygenNote: 7.1.1
