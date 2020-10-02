@@ -69,6 +69,8 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
   creation_dates <- unique(forecasts$creation_date)
   if (!all_dates) creation_dates <- last(creation_dates)
 
+  future::plan(future::multisession)
+
   ## check all combinations of: normalise, intercept, per quantile wieghts,
   ## number of weeks of history to consider
   qra_weights <- expand_grid(creation_date = creation_dates,
