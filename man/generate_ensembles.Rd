@@ -4,19 +4,29 @@
 \alias{generate_ensembles}
 \title{}
 \usage{
-generate_ensembles(forecasts, data)
+generate_ensembles(forecasts, data, all_dates = TRUE, max_history = 5, ...)
 }
 \arguments{
 \item{forecasts}{data frame of forecasts}
+
+\item{data}{data from of validation data}
+
+\item{all_dates}{whether ensembles are to be generated for all creation
+dates; otherwise will just do the latest}
+
+\item{max_history}{maximum history to consider in QRA}
+
+\item{...}{any options to pass to the \link{qra} function.}
 }
 \value{
-
+a data frame with the ensembles
 }
 \description{
-.. content for \description{} (no empty lines) ..
+Generate quantile regression ensembles and an equal-weighted ensemble
 }
 \details{
-.. content for \details{} ..
+Produces variants of QRA where the weights are optimised per quantile or
+not, with or without intercept, and normalised to sum up to 1 or not.
 }
 \author{
 Sebastian Funk
