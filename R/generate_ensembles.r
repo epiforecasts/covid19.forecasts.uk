@@ -32,18 +32,21 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
 
   estimate_weights <- function(x, ...) {
     creation_date <- x$creation_date
+    geo_pool <- x$geo_pool
     norm <- x$norm
     per_quantile_weights <- x$per_quantile_weights
     history_weeks <- x$history_weeks
 
     name <- paste("QRA",
                   if_else(norm == 1, "Norm", "NoNorm"),
+                  if_else(geo_pool == 1, "GeoPool", "NoGeoPool"),
                   if_else(per_quantile_weights == 1, "PQ", "NoPQ"),
                   if_else(per_quantile_weights == 2, "Int", "NoInt"),
                   history_weeks)
 
     message(date(), " ", creation_date, " ", name)
     pool <- "horizon" ## integrate over all horizons
+    if (geo_pool) pool <- c(pool, "geography")
 
     qe <-
       qra(complete_forecasts,
@@ -73,6 +76,7 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
   ## check all combinations of: normalise, intercept, per quantile wieghts,
   ## number of weeks of history to consider
   qra_weights <- expand_grid(creation_date = creation_dates,
+                         geo_pool = c(0, 1),
                          norm = c(0, 1),
                          per_quantile_weights = c(0, 1, 2), ## 2: intercept
                          history_weeks = 1:max_history) %>%
@@ -82,17 +86,26 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
     select(-id, -data) %>%
     unnest(qra)
 
-  ewq_weights <-
+  ewq_weights_mean <-
     tibble(ensemble =
              list(complete_forecasts %>%
                   group_by_at(vars(-model, -value)) %>%
                   summarise(value = mean(value), .groups = "drop") %>%
                   ungroup() %>%
-                  mutate(model = "EWQ")))
+                  mutate(model = "EWQmean")))
+
+  ewq_weights_median <-
+    tibble(ensemble =
+             list(complete_forecasts %>%
+                  group_by_at(vars(-model, -value)) %>%
+                  summarise(value = median(value), .groups = "drop") %>%
+                  ungroup() %>%
+                  mutate(model = "EWQmedian")))
 
   weights <- qra_weights %>%
     select(ensemble) %>%
-    bind_rows(ewq_weights) %>%
+    bind_rows(ewq_weights_mean) %>%
+    bind_rows(ewq_weights_median) %>%
     unnest(ensemble)
 
   return(weights)
