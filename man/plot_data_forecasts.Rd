@@ -2,23 +2,20 @@
 % Please edit documentation in R/plot_data_forecasts.r
 \name{plot_data_forecasts}
 \alias{plot_data_forecasts}
-\title{}
+\title{Plot data and forecasts}
 \usage{
 plot_data_forecasts(forecasts, data, horizon = 7, uncertainty = TRUE)
 }
 \arguments{
-\item{forecasts}{}
+\item{forecasts}{data frame with forecasts}
 
-\item{horizons}{}
+\item{horizons}{data frame with data}
 }
 \value{
-
+ggplot object
 }
 \description{
-.. content for \description{} (no empty lines) ..
-}
-\details{
-.. content for \details{} ..
+Plot data and forecasts
 }
 \author{
 Sebastian Funk

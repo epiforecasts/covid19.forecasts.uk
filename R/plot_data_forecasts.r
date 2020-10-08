@@ -1,15 +1,13 @@
-##' .. content for \description{} (no empty lines) ..
+##' Plot data and forecasts
 ##'
-##' .. content for \details{} ..
-##' @title 
-##' @param forecasts 
-##' @param horizons 
+##' @param forecasts data frame with forecasts
+##' @param horizons data frame with data
 ##' @importFrom dplyr bind_rows filter mutate inner_join rename group_by count between
 ##' @importFrom tidyr pivot_wider nest unnest
 ##' @importFrom ggplot2 ggplot geom_bar expand_limits facet_wrap xlab ylab ggtitle aes geom_line scale_y_continuous theme scale_colour_brewer scale_fill_brewer geom_point geom_linerange
 ##' @importFrom cowplot theme_cowplot
 ##' @importFrom scales comma
-##' @return 
+##' @return ggplot object
 ##' @author Sebastian Funk
 plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE) {
 
