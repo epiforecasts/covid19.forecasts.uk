@@ -4,13 +4,13 @@
 ##' @return list of matrices
 ##' @author Sebastian Funk
 ##' @importFrom dplyr select
-##' @importFrom tidyr unite spread
+##' @importFrom tidyr unite pivot_wider
 ##' @keywords internal
 to_matrix <- function(x) {
   x %>%
     dplyr::select(-model) %>%
     tidyr::unite(prediction_date, creation_date, value_date) %>%
-    tidyr::spread(quantile, value) %>%
+    tidyr::pivot_wider(names_from = "quantile", values_from = "value") %>%
     dplyr::select(starts_with("0")) %>%
     as.matrix()
 }
@@ -34,7 +34,8 @@ qra_create_ensemble <- function(preds, qra_res, iso = FALSE) {
     select(-model, -quantile, -weight, -value) %>%
     distinct() %>%
     cbind(as_tibble(values)) %>%
-    tidyr::gather(quantile, value, matches("^0")) %>%
+    tidyr::pivot_longer(matches("^0"),
+                        names_to = "quantile", values_to = "value") %>%
     mutate(quantile = as.numeric(quantile))
 
   return(res)
@@ -127,7 +128,7 @@ qra_estimate_weights <-
 ##' 0 and 1.
 ##' @param max_future Numeric - the maximum number of days of forecast to consider
 ##' @importFrom dplyr filter arrange desc inner_join mutate rename select bind_rows group_by_at starts_with
-##' @importFrom tidyr gather complete nest spread
+##' @importFrom tidyr gather complete nest
 ##' @importFrom rlang !!! syms
 ##' @importFrom readr parse_number
 ##' @importFrom tidyselect all_of
