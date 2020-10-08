@@ -8,9 +8,10 @@
 ##' dates; otherwise will just do the latest
 ##' @param max_history maximum history to consider in QRA
 ##' @param ... any options to pass to the \link{qra} function.
-##' @importFrom tidyr spread nest unnest gather expand_grid
+##' @importFrom tidyr pivot_wider pivot_longer nest unnest expand_grid
 ##' @importFrom dplyr mutate select
 ##' @importFrom furrr future_map
+##' @importFrom purrr map
 ##' @importFrom future plan multisession
 ##' @return a data frame with the ensembles
 ##' @author Sebastian Funk
@@ -21,12 +22,12 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
 
   ## fill quantiles
   complete_forecasts <- forecasts %>%
-    spread(quantile, value) %>%
+    pivot_wider(names_from = "quantile", values_from = "value") %>%
     nest(data = matches("^[0-9]")) %>%
-    mutate(extrapolated = map(data, estimate_quantiles)) %>%
+    mutate(extrapolated = purrr::map(data, estimate_quantiles)) %>%
     unnest(extrapolated) %>%
     select(-data) %>%
-    gather(quantile, value, matches("^[0-9]")) %>%
+    pivot_longer(names_to = "quantile", values_to = "value", matches("^[0-9]")) %>%
     mutate(quantile = as.numeric(quantile)) %>%
     inner_join(data_present, by = c("value_date", "geography", "value_type"))
 

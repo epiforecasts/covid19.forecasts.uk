@@ -9,7 +9,7 @@
 ##' @return a data frame of forecasts with additional columns \code{score} (WIS)
 ##' and \code{inside} (whether the data are inside or outside the given interval
 ##' @importFrom dplyr left_join filter select mutate rename
-##' @importFrom tidyr spread
+##' @importFrom tidyr pivot_wider
 ##' @importFrom scoringutils interval_score
 ##' @author Sebastian Funk
 score_forecasts <- function(forecast, data) {
@@ -27,7 +27,7 @@ score_forecasts <- function(forecast, data) {
            boundary = factor(boundary, levels = c("lower", "upper"))) %>%
     filter(!is.na(data)) %>%
     select(-quantile) %>%
-    spread(boundary, value) %>%
+    pivot_wider(names_from = "boundary", values_from = "value") %>%
     mutate(lower = if_else(is.na(lower), upper, lower)) %>%
     mutate(score = interval_score(data, lower, upper, 100 * interval, weigh = TRUE),
            inside = as.integer(data >= lower & data <= upper))

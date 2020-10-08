@@ -128,7 +128,7 @@ qra_estimate_weights <-
 ##' 0 and 1.
 ##' @param max_future Numeric - the maximum number of days of forecast to consider
 ##' @importFrom dplyr filter arrange desc inner_join mutate rename select bind_rows group_by_at starts_with
-##' @importFrom tidyr gather complete nest
+##' @importFrom tidyr complete nest
 ##' @importFrom rlang !!! syms
 ##' @importFrom readr parse_number
 ##' @importFrom tidyselect all_of
