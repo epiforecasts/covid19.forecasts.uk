@@ -8,9 +8,10 @@ estimate_quantiles <- function(x) {
   vec <- unlist(x)
   if (any(is.na(x))) {
     tau <- as.numeric(names(vec[!is.na(vec)]))
-    x[1, ] <-
+    x[1, order(as.numeric(names(vec)))] <-
       quantgen::quantile_extrapolate(
-                  tau, vec[!is.na(vec)], as.numeric(names(vec)), nonneg = TRUE, round = TRUE)
+                  tau, vec[!is.na(vec)], sort(as.numeric(names(vec))),
+                  nonneg = TRUE, round = TRUE)
   }
   return(x)
 }

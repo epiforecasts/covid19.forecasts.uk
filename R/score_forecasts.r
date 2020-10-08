@@ -25,10 +25,10 @@ score_forecasts <- function(forecast, data) {
            ## boundary
            boundary = if_else(quantile < 0.5, "lower", "upper"),
            boundary = factor(boundary, levels = c("lower", "upper"))) %>%
-    spread(boundary, value, drop = FALSE) %>%
-    mutate(lower = if_else(is.na(lower), upper, lower)) %>%
     filter(!is.na(data)) %>%
     select(-quantile) %>%
+    spread(boundary, value) %>%
+    mutate(lower = if_else(is.na(lower), upper, lower)) %>%
     mutate(score = interval_score(data, lower, upper, 100 * interval, weigh = TRUE),
            inside = as.integer(data >= lower & data <= upper))
 
