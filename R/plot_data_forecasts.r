@@ -11,7 +11,7 @@
 ##' @author Sebastian Funk
 plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE) {
 
-  compare_ensemble <- forecasts %>%
+  compare_forecasts <- forecasts %>%
     mutate(quantile = round(quantile, 2)) %>%
     mutate(model = factor(model)) %>%
     pivot_wider(names_from = "quantile", values_from = "value") %>%
@@ -20,7 +20,7 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
            max = `0.95`,
            model = factor(model))
 
-  plot_forecasts <- compare_ensemble %>%
+  plot_forecasts <- compare_forecasts %>%
     filter(value_date == creation_date + horizon)
 
   data_present <- data %>%
