@@ -30,7 +30,8 @@ score_forecasts <- function(forecast, data) {
     pivot_wider(names_from = "boundary", values_from = "value") %>%
     mutate(lower = if_else(is.na(lower), upper, lower)) %>%
     mutate(score = interval_score(data, lower, upper, 100 * interval, weigh = TRUE),
-           inside = as.integer(data >= lower & data <= upper))
+           inside = as.integer(data >= lower & data <= upper),
+           ae = if_else(interval == 0, abs(data - lower), NA_real_))
 
   return(interval_scored)
 }
