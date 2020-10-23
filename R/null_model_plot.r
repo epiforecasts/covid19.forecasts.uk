@@ -11,7 +11,6 @@
 ##' @importFrom binom binom.confint
 ##' @return ggplot object
 ##' @author Sebastian Funk
-
 null_model_plot <- function(forecasts, data, null, horizons = c(7, 14)) {
 
   model_names <- lapply(forecasts, function(x) {
