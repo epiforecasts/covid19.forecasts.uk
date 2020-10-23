@@ -304,9 +304,7 @@ qra <- function(forecasts, data, target_date, min_date, max_date, history,
                           by = c(setdiff(grouping_vars, "creation_date"))) %>%
         dplyr::mutate(values = purrr::map2(predictions, res, qra_create_ensemble, ...)) %>%
         select(-predictions, -res) %>%
-        tidyr::unnest(values) %>%
-        ## give model a name
-        dplyr::mutate(model = "Quantile regression average")
+        tidyr::unnest(values)
     } else {
       weights <- NULL
       pred <- NULL

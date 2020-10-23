@@ -61,6 +61,8 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
     if (!is.null(qe$weights)) {
       qe$ensemble <- qe$ensemble %>%
         mutate(model = name)
+      qe$weights <- qe$weights %>%
+        mutate(qra_model = name)
     }
 
     x$weights <- list(qe$weights)
@@ -87,27 +89,22 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
     select(-id, -data) %>%
     unnest(qra)
 
-  ewq_weights_mean <-
+  ewq_weights <-
     tibble(ensemble =
              list(complete_forecasts %>%
                   group_by_at(vars(-model, -value)) %>%
                   summarise(value = mean(value), .groups = "drop") %>%
                   ungroup() %>%
-                  mutate(model = "EWQmean")))
+                  mutate(model = "EWQ")))
 
-  ewq_weights_median <-
-    tibble(ensemble =
-             list(complete_forecasts %>%
-                  group_by_at(vars(-model, -value)) %>%
-                  summarise(value = median(value), .groups = "drop") %>%
-                  ungroup() %>%
-                  mutate(model = "EWQmedian")))
-
-  weights <- qra_weights %>%
+  ensembles <- qra_weights %>%
     select(ensemble) %>%
     bind_rows(ewq_weights_mean) %>%
-    bind_rows(ewq_weights_median) %>%
     unnest(ensemble)
 
-  return(weights)
+  weights <- qra_weights %>%
+    select(weights) %>%
+    unnest(weights)
+
+  return(list(ensembles = ensembles, qra_weights = weights))
 }
