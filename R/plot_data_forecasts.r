@@ -7,6 +7,7 @@
 ##' @importFrom ggplot2 ggplot geom_bar expand_limits facet_wrap xlab ylab ggtitle aes geom_line scale_y_continuous theme scale_colour_brewer scale_fill_brewer geom_point geom_linerange
 ##' @importFrom cowplot theme_cowplot
 ##' @importFrom scales comma
+##' @importFrom RColorBrewer brewer.pal
 ##' @return ggplot object
 ##' @author Sebastian Funk
 plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE) {
@@ -45,8 +46,8 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
     geom_line(data = data_present)
 
   if (uncertainty) {
-    p <- p + geom_point(aes(colour = model), alpha = 0.5) +
-      geom_linerange(aes(ymin = min, ymax = max, colour = model), alpha = 0.5)
+    p <- p + geom_linerange(aes(ymin = min, ymax = max, colour = model)) +
+      geom_point(aes(fill = model), pch = 21)
   } else {
     p <- p + geom_point(aes(fill = model), pch = 21)
   }
@@ -58,15 +59,17 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
     theme(legend.position = "bottom")
 
   if (length(unique(plot_forecasts$model)) > 9) {
+    palette <- brewer.pal(n = length(unique(plot_forecasts$model)) + 1, "Paired")
+    ## remove yellow
+    palette <- palette[-11]
     p <- p +
-      scale_colour_brewer("", palette = "Paired") +
-      scale_fill_brewer("", palette = "Paired")
+      scale_colour_manual("", values = palette) +
+      scale_fill_manual("", values = palette)
   } else {
     p <- p +
       scale_colour_brewer("", palette = "Set1") +
       scale_fill_brewer("", palette = "Set1")
   }
-
 
   return(p)
 }
