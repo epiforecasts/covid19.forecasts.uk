@@ -24,7 +24,7 @@ This repository contains the data and code for our manuscript:
 
 You can download the compendium as a zip from from this URL: <https://github.com/sbfnk/covid19.forecasts.uk/archive/master.zip>
 
-Or you can install this compendium as an R package, `covid19.forecatss.uk`, from GitHub with:
+Or you can install this compendium as an R package, `covid19.forecasts.uk`, from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
