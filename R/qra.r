@@ -31,6 +31,7 @@ qra_create_ensemble <- function(preds, qra_res, iso = FALSE) {
   colnames(values) <- unique(preds$quantile)
 
   res <- preds %>%
+    mutate(nmodels = length(unique(model))) %>%
     select(-model, -quantile, -weight, -value) %>%
     distinct() %>%
     cbind(as_tibble(values)) %>%
