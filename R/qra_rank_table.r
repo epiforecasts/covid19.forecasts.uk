@@ -12,18 +12,16 @@
 qra_rank_table <- function(ranked_ensembles, file,
                        format = "latex", ...) {
   df <- ranked_ensembles %>%
-    separate(model, c("ensemble_type", "sum to 1", "by region",
+    separate(model, c("ensemble_type", "sum to 1",
                       "by quantile", "intercept", "history (weeks)")) %>%
     mutate(`sum to 1` = recode_factor(`sum to 1`, NoNorm = "no", Norm = "yes"),
-           `by region` =
-             recode_factor(`by region`, GeoPool = "no", NoGeoPool = "yes"),
            `by quantile` =
              recode_factor(`by quantile`, NoPQ = "no", PQ = "yes"),
            intercept = recode_factor(intercept, Int = "yes", NoInt = "no"),
            mean = round(mean, 1),
            sd = round(sd, 1)) %>%
     select(`history (weeks)`, `sum to 1`,
-           intercept, `by quantile`, `by region`,
+           intercept, `by quantile`,
            mean, sd) %>%
     arrange(mean)
 

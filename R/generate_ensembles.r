@@ -33,21 +33,18 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
 
   estimate_weights <- function(x, ...) {
     creation_date <- x$creation_date
-    geo_pool <- x$geo_pool
     norm <- x$norm
     per_quantile_weights <- x$per_quantile_weights
     history_weeks <- x$history_weeks
 
     name <- paste("QRA",
                   if_else(norm == 1, "Norm", "NoNorm"),
-                  if_else(geo_pool == 1, "GeoPool", "NoGeoPool"),
                   if_else(per_quantile_weights == 1, "PQ", "NoPQ"),
                   if_else(per_quantile_weights == 2, "Int", "NoInt"),
                   history_weeks)
 
     message(date(), " ", creation_date, " ", name)
     pool <- "horizon" ## integrate over all horizons
-    if (geo_pool) pool <- c(pool, "geography")
 
     qe <-
       qra(complete_forecasts,
@@ -62,7 +59,8 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
       qe$ensemble <- qe$ensemble %>%
         mutate(model = name)
       qe$weights <- qe$weights %>%
-        mutate(qra_model = name)
+        mutate(qra_model = name,
+               creation_date = as.Date(creation_date))
     }
 
     x$weights <- list(qe$weights)
@@ -78,28 +76,37 @@ generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 
 
   ## check all combinations of: normalise, intercept, per quantile wieghts,
   ## number of weeks of history to consider
-  qra_weights <- expand_grid(creation_date = creation_dates,
-                         geo_pool = c(0, 1),
-                         norm = c(0, 1),
-                         per_quantile_weights = c(0, 1, 2), ## 2: intercept
-                         history_weeks = 1:max_history) %>%
+  qra_weights <-
+    expand_grid(creation_date = creation_dates,
+                norm = c(0, 1),
+                per_quantile_weights = c(0, 1, 2), ## 2: intercept
+                history_weeks = 1:max_history) %>%
     mutate(id = 1:n()) %>%
     nest(data = c(-id)) %>%
     mutate(qra = furrr::future_map(data, estimate_weights, .progress = TRUE)) %>%
     select(-id, -data) %>%
     unnest(qra)
 
-  ewq_weights <-
+  ewq_weights_mean <-
     tibble(ensemble =
              list(complete_forecasts %>%
                   group_by_at(vars(-model, -value)) %>%
-                  summarise(value = mean(value), .groups = "drop") %>%
+                  summarise(value = mean(value), nmodels = n(), .groups = "drop") %>%
                   ungroup() %>%
-                  mutate(model = "EWQ")))
+                  mutate(model = "EWQmean")))
+
+  ewq_weights_median <-
+    tibble(ensemble =
+             list(complete_forecasts %>%
+                  group_by_at(vars(-model, -value)) %>%
+                  summarise(value = median(value), nmodels = n(), .groups = "drop") %>%
+                  ungroup() %>%
+                  mutate(model = "EWQmedian")))
 
   ensembles <- qra_weights %>%
     select(ensemble) %>%
     bind_rows(ewq_weights_mean) %>%
+    bind_rows(ewq_weights_median) %>%
     unnest(ensemble)
 
   weights <- qra_weights %>%
