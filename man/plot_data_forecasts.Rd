@@ -4,7 +4,13 @@
 \alias{plot_data_forecasts}
 \title{Plot data and forecasts}
 \usage{
-plot_data_forecasts(forecasts, data, horizon = 7, uncertainty = TRUE)
+plot_data_forecasts(
+  forecasts,
+  data,
+  horizon = 7,
+  uncertainty = TRUE,
+  scales = "free_y"
+)
 }
 \arguments{
 \item{forecasts}{data frame with forecasts}

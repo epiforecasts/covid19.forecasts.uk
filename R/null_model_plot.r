@@ -6,7 +6,7 @@
 ##' @param horizons forecast horizons to consider
 ##' @importFrom dplyr bind_rows mutate filter group_by ungroup summarise select
 ##' @importFrom tidyr gather spread
-##' @importFrom ggplot2 aes geom_vline geom_point geom_linerange scale_x_discrete scale_colour_brewer xlab ylab facet_wrap expand_limits coord_flip theme
+##' @importFrom ggplot2 aes geom_vline geom_hline geom_point geom_linerange scale_x_discrete scale_colour_brewer xlab ylab facet_wrap expand_limits coord_flip theme position_dodge
 ##' @importFrom cowplot theme_cowplot
 ##' @importFrom binom binom.confint
 ##' @return ggplot object

@@ -5,7 +5,7 @@
 \alias{uk_forecasts}
 \title{UK forecasts in quantile format}
 \description{
-Contains Covid-19 forecasts made between 31 March and 31 July 2020, by geography (NHS region and UK nation), value_type (code for different targets), value_desc (description of the traget), creation_date (the date on which the forecast was made), value_date (the predicted date), quantile (the predictive quantile) and value (the forecast at the given quantile)
+Contains Covid-19 forecasts made between 31 March and 13 July 2020, by geography (NHS region and UK nation), value_type (code for different targets), value_desc (description of the traget), creation_date (the date on which the forecast was made), value_date (the predicted date), quantile (the predictive quantile) and value (the forecast at the given quantile).
 }
 \author{
 Sebastian Funk \email{sebastian.funk@lshtm.ac.uk}
