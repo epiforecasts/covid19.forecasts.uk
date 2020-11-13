@@ -17,7 +17,7 @@ Title <- "Short-term forecasts to inform the response to the Covid-19 epidemic i
 
 This repository contains the data and code for our manuscript:
 
-> Funk S, Abbott S, Atkins B, Baguelin M, Baillie JK, Birrell P, Blake J, Bosse NI, Burton J, Carruthers J, Davies NG, De Angelis D, Dyson L, Edmunds WJ, Eggo RM, Ferguson NM, Gaythorpe K, Gorsich E, Guyver-Fletcher G, Hellewell J, Hill EM, Holmes A, House TA, Jewell C, Jit M, Jombart T, Joshi I, Keeling MJ, Kendall E, Knock E, Kucharski AJ, Lythgoe KA, Meakin SR, Munday JD, Openshaw PJM, Overton CE, Pagani F, Pearson J, Pellis L, Scarabel F, Semple MG, Sherratt K, Tang M, Tildesley MJ, Van Leeuwen E, Whittles LK, CMMID COVID-19 Working Group, Imperial College COVID-19 Response Team, ISARIC4C Investigators. _`r Title`_. <!-- MedRxiv:, online at <https://doi.org/> -->
+> Funk S, Abbott S, Atkins B, Baguelin M, Baillie JK, Birrell P, Blake J, Bosse NI, Burton J, Carruthers J, Davies NG, De Angelis D, Dyson L, Edmunds WJ, Eggo RM, Ferguson NM, Gaythorpe K, Gorsich E, Guyver-Fletcher G, Hellewell J, Hill EM, Holmes A, House TA, Jewell C, Jit M, Jombart T, Joshi I, Keeling MJ, Kendall E, Knock E, Kucharski AJ, Lythgoe KA, Meakin SR, Munday JD, Openshaw PJM, Overton CE, Pagani F, Pearson J, Pellis L, Scarabel F, Semple MG, Sherratt K, Tang M, Tildesley MJ, Van Leeuwen E, Whittles LK, CMMID COVID-19 Working Group, Imperial College COVID-19 Response Team, ISARIC4C Investigators. _`r Title`_. MedRxiv:, online at <https://www.medrxiv.org/content/10.1101/2020.11.11.20220962v1>
 
 ### How to download or install
 
