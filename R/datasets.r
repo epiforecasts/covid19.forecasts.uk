@@ -38,10 +38,18 @@ NULL
 
 ##' Covid-19 UK data
 ##'
-##' Contains the weights of individual models for each quantile as estimated in
-##' the different variants (qra_model) of quantile regression averaging (QRA).
+##' Contains the publicly available part of the data used for forecasting.
 ##'
 ##' @name covid_uk_data
+##' @docType data
+##' @author Sebastian Funk \email{sebastian.funk@lshtm.ac.uk}
+NULL
+
+##' Data to exclude from scoring
+##'
+##' Contains data sets to exclude from scoring because the they were not available at the time the forecasts were made.
+##'
+##' @name exclude_data
 ##' @docType data
 ##' @author Sebastian Funk \email{sebastian.funk@lshtm.ac.uk}
 NULL

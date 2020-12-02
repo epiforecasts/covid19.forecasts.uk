@@ -1,16 +1,21 @@
 ##' Plot data and forecasts
 ##'
 ##' @param forecasts data frame with forecasts
+##' @param data truth data matching the forecasts
+##' @param horizon forecast horizon to plot
+##' @param uncertainty whether to plot uncertainty or not
+##' @param scales any scales argument to pass to facet_wrap
+##' @param exclude any data to exclude
 ##' @param horizons data frame with data
 ##' @importFrom dplyr bind_rows filter mutate inner_join rename group_by count between
 ##' @importFrom tidyr pivot_wider nest unnest
-##' @importFrom ggplot2 ggplot geom_bar expand_limits facet_wrap xlab ylab ggtitle aes geom_line scale_y_continuous theme scale_colour_brewer scale_colour_manual scale_fill_brewer scale_fill_manual geom_point geom_linerange
+##' @importFrom ggplot2 ggplot geom_bar expand_limits facet_wrap xlab ylab ggtitle aes geom_line scale_y_continuous theme scale_colour_brewer scale_colour_manual scale_fill_brewer scale_fill_manual geom_point geom_linerange geom_rect
 ##' @importFrom cowplot theme_cowplot
 ##' @importFrom scales comma
 ##' @importFrom RColorBrewer brewer.pal
 ##' @return ggplot object
 ##' @author Sebastian Funk
-plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE, scales = "free_y") {
+plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE, scales = "free_y", exclude = NULL) {
 
   compare_forecasts <- forecasts %>%
     mutate(quantile = round(quantile, 2)) %>%
@@ -40,11 +45,11 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
     mutate(nvt = length(unique(value_type)),
            geography_value_desc =
              if_else(nvt == 1, as.character(geography), geography_value_desc)) %>%
-    select(-nvt, -value_type)
+    select(-nvt)
 
   forecasts_data <- plot_forecasts %>%
     inner_join(data_present,
-               by = c("value_date", "geography", "value_desc")) %>%
+               by = c("value_date", "geography", "value_type", "value_desc")) %>%
     rename(value = value.x, data = value.y) %>%
     group_by(geography_value_desc) %>%
     mutate(max_data = max(data)) %>%
@@ -60,14 +65,39 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
     sqrt() %>%
     ceiling()
 
-  p <- ggplot(forecasts_data, mapping = aes(x = value_date, y = value)) +
-    geom_line(data = data_present)
+  p <- ggplot(forecasts_data) +
+    geom_line(data = data_present,
+              mapping = aes(x = value_date, y = value))
+
+  if (!is.null(exclude)) {
+    forecast_max <- forecasts_data %>%
+      group_by(geography, value_type) %>%
+      summarise(max = max(max), .groups = "drop") %>%
+      ungroup()
+
+    exclude_plot <- exclude_data %>%
+      left_join(forecast_max, by = c("geography", "value_type")) %>%
+      inner_join(data_present %>%
+                select(value_date, geography, value_type,
+                       geography_value_desc),
+                by = c("geography", "value_type")) %>%
+      mutate(start_date = min(value_date), .groups = "drop") %>%
+      select(geography, value_type, geography_value_desc,
+             start_date, end_date, max) %>%
+      distinct()
+
+    p <- p +
+      geom_rect(data = exclude_plot,
+                aes(xmin = start_date, xmax = end_date,
+                    ymin = 0, ymax = max), fill = "black", alpha = 0.2)
+  }
 
   if (uncertainty) {
-    p <- p + geom_linerange(aes(ymin = min, ymax = max, colour = model), alpha = 0.5) +
-      geom_point(aes(fill = model), pch = 21, alpha = 0.5)
+    p <- p + geom_linerange(aes(x = value_date, y = value, ymin = min,
+                                ymax = max, colour = model), alpha = 0.5) +
+      geom_point(aes(x = value_date, y = value, fill = model), pch = 21, alpha = 0.5)
   } else {
-    p <- p + geom_point(aes(fill = model), pch = 21)
+    p <- p + geom_point(aes(x = value_date, y = value, fill = model), pch = 21)
   }
   p <- p +
     facet_wrap(~ geography_value_desc, scales = scales, ncol = ncol) +

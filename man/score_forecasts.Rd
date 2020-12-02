@@ -4,7 +4,7 @@
 \alias{score_forecasts}
 \title{Score forecasts according to the weighted interval score and coverage}
 \usage{
-score_forecasts(forecast, data)
+score_forecasts(forecast, data, exclude = NULL)
 }
 \arguments{
 \item{forecast}{a data frame of forecasts}

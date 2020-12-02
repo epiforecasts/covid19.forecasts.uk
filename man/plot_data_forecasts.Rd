@@ -9,11 +9,22 @@ plot_data_forecasts(
   data,
   horizon = 7,
   uncertainty = TRUE,
-  scales = "free_y"
+  scales = "free_y",
+  exclude = NULL
 )
 }
 \arguments{
 \item{forecasts}{data frame with forecasts}
+
+\item{data}{truth data matching the forecasts}
+
+\item{horizon}{forecast horizon to plot}
+
+\item{uncertainty}{whether to plot uncertainty or not}
+
+\item{scales}{any scales argument to pass to facet_wrap}
+
+\item{exclude}{any data to exclude}
 
 \item{horizons}{data frame with data}
 }

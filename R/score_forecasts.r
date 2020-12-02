@@ -12,12 +12,21 @@
 ##' @importFrom tidyr pivot_wider
 ##' @importFrom scoringutils interval_score
 ##' @author Sebastian Funk
-score_forecasts <- function(forecast, data) {
+score_forecasts <- function(forecast, data, exclude = NULL) {
+
+ if (!is.null(exclude)) {
+    use_data <- data %>%
+      left_join(exclude, by = c("geography", "value_type")) %>%
+      filter(is.na(end_date) | value_date > end_date) %>%
+      select(-end_date)
+  } else {
+    use_data <- data
+  }
 
   ## Score forecasts
   interval_scored <- forecast %>%
-    left_join(data, by = c("value_date", "geography",
-                           "value_type", "value_desc")) %>%
+    left_join(use_data, by = c("value_date", "geography",
+                               "value_type", "value_desc")) %>%
     rename(value = value.x, data = value.y) %>%
     mutate(interval = round(2 * abs(quantile - 0.5), 2),
            ## 0.5 centile defined as "upper" here -> will have to duplicate to
