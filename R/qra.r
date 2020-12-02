@@ -165,6 +165,15 @@ qra <- function(forecasts, data, target_date, min_date, max_date, history,
   obs_and_pred <- forecasts %>%
     dplyr::filter(creation_date < target_date)
 
+  ## data available at the time of target_date
+  if ("truncation" %in% colnames(data)) {
+    available_data <- data %>%
+      filter(value_date + truncation <= target_date) %>%
+      select(-truncation)
+  } else {
+    available_data <- data
+  }
+
   creation_dates <- unique(obs_and_pred$creation_date)
 
   ## determine dates for training data set
@@ -242,8 +251,8 @@ qra <- function(forecasts, data, target_date, min_date, max_date, history,
 
   obs_and_pred <- obs_and_pred %>%
       ## join data
-      dplyr::left_join(data,
-                 by = setdiff(colnames(data), c("value"))) %>%
+      dplyr::inner_join(available_data,
+                 by = setdiff(colnames(available_data), c("value"))) %>%
       dplyr::rename(value = value.x, data = value.y)
 
   ## check if only specific quantiles are to be used
