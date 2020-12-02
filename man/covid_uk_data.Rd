@@ -5,8 +5,7 @@
 \alias{covid_uk_data}
 \title{Covid-19 UK data}
 \description{
-Contains the weights of individual models for each quantile as estimated in
-the different variants (qra_model) of quantile regression averaging (QRA).
+Contains the publicly available part of the data used for forecasting.
 }
 \author{
 Sebastian Funk \email{sebastian.funk@lshtm.ac.uk}
