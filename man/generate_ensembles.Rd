@@ -4,7 +4,14 @@
 \alias{generate_ensembles}
 \title{Generate quantile regression ensembles and an equal-weighted ensemble}
 \usage{
-generate_ensembles(forecasts, data, all_dates = TRUE, max_history = 5, ...)
+generate_ensembles(
+  forecasts,
+  data,
+  all_dates = TRUE,
+  max_history = 5,
+  exclude = NULL,
+  ...
+)
 }
 \arguments{
 \item{forecasts}{data frame of forecasts}
@@ -15,6 +22,8 @@ generate_ensembles(forecasts, data, all_dates = TRUE, max_history = 5, ...)
 dates; otherwise will just do the latest}
 
 \item{max_history}{maximum history to consider in QRA}
+
+\item{exclude}{any data to exclude}
 
 \item{...}{any options to pass to the \link{qra} function.}
 }

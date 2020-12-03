@@ -4,16 +4,16 @@
 \alias{null_model_plot}
 \title{Plot performance against the null model}
 \usage{
-null_model_plot(forecasts, data, null, horizons = c(7, 14))
+null_model_plot(forecasts, null, horizons = c(7, 14))
 }
 \arguments{
 \item{forecasts}{a list of data frames with scored forecasts}
 
-\item{data}{data frame with data}
-
 \item{null}{data frame with scored null model}
 
 \item{horizons}{forecast horizons to consider}
+
+\item{data}{data frame with data}
 }
 \value{
 ggplot object
