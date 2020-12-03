@@ -15,7 +15,9 @@
 ##' @importFrom RColorBrewer brewer.pal
 ##' @return ggplot object
 ##' @author Sebastian Funk
-plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE, scales = "free_y", exclude = NULL) {
+plot_data_forecasts <-
+  function(forecasts, data, horizon = 7, uncertainty = TRUE, scales = "free_y",
+           exclude = NULL) {
 
   compare_forecasts <- forecasts %>%
     mutate(quantile = round(quantile, 2)) %>%
@@ -48,12 +50,13 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
     select(-nvt)
 
   forecasts_data <- plot_forecasts %>%
-    inner_join(data_present,
+    right_join(data_present,
                by = c("value_date", "geography", "value_type", "value_desc")) %>%
     rename(value = value.x, data = value.y) %>%
     group_by(geography_value_desc) %>%
     mutate(max_data = max(data)) %>%
     ungroup() %>%
+    filter(!is.na(value)) %>%
     mutate(value = if_else(value > 2 * max_data, NA_real_, value),
            max = if_else(max > 2 * max_data, 2 * max_data, max),
            min = if_else(min > 2 * max_data, 2 * max_data, min))
@@ -72,7 +75,7 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
   if (!is.null(exclude)) {
     forecast_max <- forecasts_data %>%
       group_by(geography, value_type) %>%
-      summarise(max = max(max), .groups = "drop") %>%
+      summarise(max = max(max, na.rm = TRUE), .groups = "drop") %>%
       ungroup()
 
     exclude_plot <- exclude %>%
