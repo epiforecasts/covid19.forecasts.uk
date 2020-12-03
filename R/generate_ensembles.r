@@ -7,6 +7,7 @@
 ##' @param all_dates whether ensembles are to be generated for all creation
 ##' dates; otherwise will just do the latest
 ##' @param max_history maximum history to consider in QRA
+##' @param exclude any data to exclude
 ##' @param ... any options to pass to the \link{qra} function.
 ##' @importFrom tidyr pivot_wider pivot_longer nest unnest expand_grid
 ##' @importFrom dplyr mutate select
@@ -15,7 +16,7 @@
 ##' @importFrom future plan multisession
 ##' @return a data frame with the ensembles
 ##' @author Sebastian Funk
-generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 5, ...) {
+generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 5, exclude = NULL, ...) {
 
   data_present <- data %>%
     select(value_date, geography, value_type)

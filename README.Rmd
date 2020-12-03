@@ -142,7 +142,7 @@ To generate Figure 3, run
 selected_ensembles <- ensembles %>%
   filter(model %in% best_ensembles$model, nmodels > 1) %>%
   mutate(model = substr(model, 1, 3))
-p <- plot_data_forecasts(selected_ensembles, plot_data)
+p <- plot_data_forecasts(selected_ensembles, plot_data, exclude = exclude_data)
 save_plot("figure3.png", p, base_height = 9)
 ```
 
