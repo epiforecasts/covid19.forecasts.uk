@@ -75,7 +75,7 @@ plot_data_forecasts <- function(forecasts, data, horizon = 7, uncertainty = TRUE
       summarise(max = max(max), .groups = "drop") %>%
       ungroup()
 
-    exclude_plot <- exclude_data %>%
+    exclude_plot <- exclude %>%
       left_join(forecast_max, by = c("geography", "value_type")) %>%
       inner_join(data_present %>%
                 select(value_date, geography, value_type,
