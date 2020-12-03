@@ -9,7 +9,24 @@ Authors@R:
 Description: Contains all the code and data required to generate the figures and tables in the manuscript.
 Depends:
     R (>= 4.0.0),
-    dplyr
+    RColorBrewer,
+    binom,
+    cowplot,
+    dplyr,
+    furrr,
+    future,
+    ggplot2,
+    kableExtra,
+    lubridate,
+    msm,
+    purrr,
+    quantgen,
+    readr,
+    rlang,
+    scales,
+    scoringutils,
+    tidyr,
+    tidyselect
 License: MIT + file LICENSE
 ByteCompile: true
 Encoding: UTF-8
