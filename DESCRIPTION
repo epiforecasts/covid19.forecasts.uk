@@ -35,4 +35,4 @@ URL: https://github.com/sbfnk/covid19.forecasts.uk
 BugReports: https://github.com/sbfnk/covid19.forecasts.uk/issues
 RoxygenNote: 7.1.1
 Remotes:
-  ryantibs/quantgen/R-package/quantgen
+  ryantibs/quantgen/quantgen
