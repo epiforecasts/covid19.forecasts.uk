@@ -263,7 +263,7 @@ qra <- function(forecasts, data, target_date, min_date, max_date, history,
 
   ## require a complete set of forecasts to be include in QRA
   complete_set <- obs_and_pred %>%
-    dplyr::group_by_at(tidyselect::all_of(c(grouping_vars, "horizon"))) %>%
+    dplyr::group_by_at(tidyselect::all_of(c(grouping_vars))) %>%
     ## create complete tibble of all combinations of creation date, model
     ## and pooling variables
     tidyr::complete(!!!syms(pooling_vars)) %>%
