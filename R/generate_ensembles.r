@@ -16,6 +16,7 @@
 ##' @importFrom future plan multisession
 ##' @return a data frame with the ensembles
 ##' @author Sebastian Funk
+##' @export
 generate_ensembles <- function(forecasts, data, all_dates = TRUE, max_history = 5, exclude = NULL, ...) {
 
   data_present <- data %>%
