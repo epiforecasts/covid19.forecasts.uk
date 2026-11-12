@@ -4,6 +4,8 @@
 Short-term forecasts to inform the response to the Covid-19 epidemic in the UK
 ==============================================================================
 
+> **Archived.** No longer maintained; last updated July 2022.
+
 This repository contains the data and code for our manuscript:
 
 > Funk S, Abbott S, Atkins B, Baguelin M, Baillie JK, Birrell P, Blake
